@@ -7,7 +7,7 @@ var ResultSchema = new mongoose.Schema({
   web: {type: String, required: true},
   vulnerability: {type: String, required: true},
   date: {type: Date, required: true},
-  userId: {type: String, required: true}
+  user: {type: String, ref: 'User', required: true}
 });
 
 // Export the Mongoose model

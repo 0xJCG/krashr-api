@@ -1,5 +1,6 @@
 // Load required packages
 var JsonSocket = require('json-socket');
+var _ = require('underscore');
 
 // Load required models
 var Result = require('../models/result');
@@ -7,19 +8,21 @@ var User = require('../models/user');
 
 // Create endpoint /results for GET
 exports.getResults = function(req, res) {
-  // Use the Result model to find all results
-  Result.find({ userId: req._id }, function(err, results) {
+  // Use the User model to find all his/her results
+  User.findOne({ _id: req._id }).populate('results').exec(function(err, user) {
     if (err)
       return res.send(err);
 
-    res.json(results);
+    // http://stackoverflow.com/questions/11090817/group-by-order-by-on-json-data-using-javascript-jquery
+    var r = _.chain(user.results).sortBy("date", "web").groupBy("process", "web").value();
+    res.json(r);
   });
 };
 
 // Create endpoint /results/:process for GET
 exports.getResult = function(req, res) {
   // Use the Result model to find a specific results
-  Result.find({ userId: req._id, process: req.params.process }, function(err, result) {
+  Result.find({ user: req._id, process: req.params.process }, function(err, result) {
     if (err)
       return res.send(err);
 
@@ -31,10 +34,9 @@ exports.getResult = function(req, res) {
 // Create endpoint /result/number for GET
 exports.getResultNumber = function(req, res) {
   // Use the Result model to find a specific results
-  Result.find({ userId: req._id }, function(err, results) {
+  Result.find({ user: req._id }, function(err, results) {
     if (err)
       return res.send(err);
-
     var d = {length: Object.keys(results).length}
     res.json(d);
   });
