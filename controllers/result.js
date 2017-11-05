@@ -44,7 +44,7 @@ exports.getResultNumber = function(req, res) {
 // Create endpoint /result/current for GET
 exports.getCurrentResult = function(req, res) {
   // Use the User model to find a specific user to ask the server his/her current search
-  User.find({ _id: req._id }, function(err, user) {
+  User.findOne({ _id: req._id }, function(err, user) {
     var msg = {
 	  "user": user.username
 	}
@@ -57,7 +57,7 @@ exports.getCurrentResult = function(req, res) {
     socket.on('connect', function() { // Don't send until we're connected
       socket.sendMessage(msg);
       socket.on('data', function(data) {
-        res.json(data);
+        res.send(data);
       });
     });
   });
@@ -67,10 +67,10 @@ exports.getCurrentResult = function(req, res) {
 // Create endpoint /search for POST
 exports.search = function(req, res) {
   // Use the User model to find a specific user to tell the server his/her new search
-  User.find({ _id: req._id }, function(err, user) {
+  User.findOne({ _id: req._id }, function(err, user) {
     var msg = {
       "user": user.username,
-      "url": req.url,
+      "url": req.body.url,
       "search_options": [
         {
           "number": 1,

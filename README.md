@@ -28,3 +28,5 @@ node app.js
 
 * Improve the API authentication using Passport and OAuth2.
 * Activate HTTPS.
+* Check CORS problems.
+* Add the methods missing from the first version of the API.

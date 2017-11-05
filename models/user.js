@@ -1,6 +1,7 @@
 // Load required packages
 var mongoose = require('mongoose');
 var bcrypt = require('bcrypt-nodejs');
+var Schema = mongoose.Schema;
 
 // Define our user schema
 var UserSchema = new mongoose.Schema({
@@ -17,7 +18,8 @@ var UserSchema = new mongoose.Schema({
     type: String,
     unique: true,
     required: true
-  }
+  },
+  results: [{type:Schema.Types.ObjectId, ref:'Result'}]
 });
 
 // Execute before each user.save() call
