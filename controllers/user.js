@@ -32,7 +32,7 @@ exports.getUsers = function(req, res) {
 exports.getUser = function(req, res) {
 
   // Use the User model to find a specific user
-  User.find({ _id: req._id }, function(err, user) {
+  User.findOne({ _id: req._id }, function(err, user) {
     if (err)
       return res.send(err);
 
